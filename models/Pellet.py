@@ -24,3 +24,7 @@ class Pellet:
 	def draw(self):
 		self.body.draw(self.win)
 		self.core.draw(self.win)
+
+	def undraw(self):
+		self.body.undraw()
+		self.core.undraw()

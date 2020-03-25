@@ -3,9 +3,9 @@ from pynput import keyboard
 from functools import partial
 
 class KeyboardListener:
-	def __init__(self,inputQueue):
+	def __init__(self,keyboardQueue):
 		self.listener = None
-		self.inputQueue = inputQueue
+		self.keyboardQueue = keyboardQueue
 
 		self.current = set()
 
@@ -25,15 +25,13 @@ class KeyboardListener:
 	def on_press(self,key):
 		try:
 			if key == keyboard.Key.up:
-				self.inputQueue.put("Up")
+				self.keyboardQueue.put("Up")
 			elif key == keyboard.Key.down:
-				self.inputQueue.put("Down")
+				self.keyboardQueue.put("Down")
 			elif key == keyboard.Key.left:
-				self.inputQueue.put("Left")
+				self.keyboardQueue.put("Left")
 			elif key == keyboard.Key.right:
-				self.inputQueue.put("Right")
-
-			#print(self.inputQueue.get())
+				self.keyboardQueue.put("Right")
 
 		except AttributeError:
 			print('special key {0} pressed'.format(key))

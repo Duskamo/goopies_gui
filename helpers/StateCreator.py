@@ -62,6 +62,13 @@ class StateCreator:
 		for i in range(len(self.pellets)):
 			self.pellets[i].draw()
 
+		# let goopies know about pellets, and zappers know about goopies
+		for i in range(len(self.zappers)):
+			self.zappers[i].goopies = self.goopies
+
+		for i in range(len(self.goopies)):
+			self.goopies[i].pellets = self.pellets
+
 	def getZappers(self):
 		return self.zappers
 

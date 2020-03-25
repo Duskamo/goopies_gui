@@ -1,7 +1,7 @@
 
 from libs.graphics import *
 
-from models.Corpse import *
+from managers.GoopieUpdateManager import *
 
 class Goopie:
 	def __init__(self,win,x,y):
@@ -10,6 +10,7 @@ class Goopie:
 		self.y = y 
 		self.radius = 15
 
+		self.updateManager = GoopieUpdateManager(self)
 		self.health = 100
 		self.color = 'blue'
 
@@ -84,29 +85,16 @@ class Goopie:
 	def update(self):
 		# Update Skin of goopie by its health
 		if self.health > 0:
-			self.body.undraw()
-			self.body = Circle(Point(self.x,self.y),self.radius)
-			self.body.setWidth(1)
-			self.body.setOutline(self.color)
-			self.body.draw(self.win)
+			self.updateManager.updateSkin()
 
 		# Turn goopie to corpse if health drops to 0
 		if self.health == 0:
-			self.undraw()
-			corpse = Corpse(self.win,self.x,self.y)
-			corpse.draw()
-			self = None
+			self.updateManager.goopieCorpse()
 
 		# Move goopie on keyboard input
-		if not self.inputQueue.empty():
-			if self.inputQueue.get() == "Up":
-				self.move(0,-3)
-			elif self.inputQueue.get() == "Down":
-				self.move(0,5)
-			elif self.inputQueue.get() == "Left":
-				self.move(-6,0)
-			elif self.inputQueue.get() == "Right":
-				self.move(6,0)
-		
-			self.inputQueue.queue.clear()
+		if not self.keyboardQueue.empty():
+			self.updateManager.goopieKeyboardInput()
 
+		# Clear pellet from screen when collided
+		if not self.pelletConsumedQueue.empty():
+			self.updateManager.clearPelletOnContact()

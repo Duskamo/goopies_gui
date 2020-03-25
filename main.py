@@ -33,15 +33,17 @@ class main():
 		self.isRunning = True
 
 		# Setup Queues, Listeners, and off threads
-		self.inputQueue = Queue(maxsize=0)
+		self.keyboardQueue = Queue(maxsize=0)
+		self.pelletConsumedQueue = Queue(maxsize=0)
 
-		goopieConsumerListener = GoopieConsumerListener(self.goopies)
+		self.goopies[0].pellets = self.pellets
+		self.goopies[0].keyboardQueue = self.keyboardQueue  # TEMP
+		self.goopies[0].pelletConsumedQueue = self.pelletConsumedQueue
+
+		goopieConsumerListener = GoopieConsumerListener(self.goopies,self.pellets,self.pelletConsumedQueue)
 		goopieConsumerListener.start()
-
-		keyboardListener = KeyboardListener(self.inputQueue)
+		keyboardListener = KeyboardListener(self.keyboardQueue)
 		keyboardListener.start()
-
-		self.goopies[0].inputQueue = self.inputQueue # TEMP
 
 		# Setup Game Loop
 		self.run()
@@ -61,14 +63,10 @@ class main():
 				self.goopies[i].update()
 
 			for i in range(len(self.zappers)):
+				self.zappers[i].goopies = self.goopies
 				self.zappers[i].update()
 
 			# Draw - Render things on screen
-			#for i in range(len(self.goopies)):
-			#	self.goopies[i].undraw()
-
-			#for i in range(len(self.goopies)):
-			#	self.goopies[i].draw()
 
 			# Pause thread for framerate
 			time.sleep(0.0017)
