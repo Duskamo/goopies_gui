@@ -58,7 +58,7 @@ class main():
 			# Process Events - Process inputs and other things
 			self.processEvents()
 
-			# Update - Update all objects that needs updating, ex position changes, physics 
+			# Update - Update all objects that needs updating, ex position changes, physics
 			for i in range(len(self.goopies)):
 				self.goopies[i].update()
 

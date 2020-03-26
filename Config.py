@@ -6,4 +6,5 @@ class Config:
 	PELLET_POPULATION = 2
 
 	# Movement Config
-	ZAPPER_MOVEMENT = "None" # None | Random | Nearest
+	ZAPPER_MOVEMENT = "None"  # None | Random | Nearest
+	GOOPIE_MOVEMENT = "Fluid"  # None | Cardinal | Fluid

@@ -1,6 +1,7 @@
 
 from libs.graphics import *
 
+from Config import *
 from managers.GoopieUpdateManager import *
 
 class Goopie:
@@ -36,10 +37,10 @@ class Goopie:
 
 		self.thrusterNE = Line(Point(self.x,self.y-15),Point(self.x+15,self.y))
 		self.thrusterNE.setFill('light grey')
-		self.thrusterSE = Line(Point(self.x,self.y+15),Point(self.x+15,self.y))
-		self.thrusterSE.setFill('light grey')
 		self.thrusterNW = Line(Point(self.x,self.y-15),Point(self.x-15,self.y))
 		self.thrusterNW.setFill('light grey')
+		self.thrusterSE = Line(Point(self.x, self.y + 15), Point(self.x + 15, self.y))
+		self.thrusterSE.setFill('light grey')
 		self.thrusterSW = Line(Point(self.x,self.y+15),Point(self.x-15,self.y))
 		self.thrusterSW.setFill('light grey')	
 
@@ -91,9 +92,13 @@ class Goopie:
 		if self.health == 0:
 			self.updateManager.goopieCorpse()
 
-		# Move goopie on keyboard input
-		if not self.keyboardQueue.empty():
+		# Move goopie on keyboard input in basic cardinal direction pattern
+		if not self.keyboardQueue.empty() and Config.GOOPIE_MOVEMENT == "Cardinal":
 			self.updateManager.goopieKeyboardInput()
+
+		# Move goopie on keyboard input in fluid direction pattern
+		if not self.keyboardQueue.empty() and Config.GOOPIE_MOVEMENT == "Fluid":
+			self.updateManager.goopieKeyboardInputFluid()
 
 		# Clear pellet from screen when collided
 		if not self.pelletConsumedQueue.empty():
